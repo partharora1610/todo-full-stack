@@ -1,0 +1,52 @@
+const express = require("express");
+const authenticateJwt = require("../middleware/auth");
+
+const router = express.Router();
+
+router.get("/", authenticateJwt, (req, res) => {
+  const userId = req.userId;
+
+  Todo.find({ userId })
+    .then((todos) => {
+      res.json(todos);
+    })
+    .catch((err) => {
+      res.status(500).json({ error: "Failed to retrieve todos" });
+    });
+});
+
+router.post("/", (req, res) => {
+  const { title, description } = req.body;
+  const done = false;
+
+  const newTodo = new Todo({ title, description, done, userId });
+  newTodo
+    .save()
+    .then((savedTodo) => {
+      res.status(201).json(savedTodo);
+    })
+    .catch((err) => {
+      res.status(500).json({ error: "Failed to create a new todo" });
+    });
+});
+
+// router.delete("/todos", (res, res) => {});
+
+router.patch("/:todoId", (req, res) => {
+  const { todoId } = req.params;
+  const userId = req.userId;
+
+  // just updating the database from here nothing else..
+  Todo.findOneAndUpdate({ _id: todoId, userId }, { done: true }, { new: true })
+    .then((updatedTodo) => {
+      if (!updatedTodo) {
+        return res.status(404).json({ error: "Todo not found" });
+      }
+      res.json(updatedTodo);
+    })
+    .catch((err) => {
+      res.status(500).json({ error: "Failed to update todo" });
+    });
+});
+
+module.exports = router;
