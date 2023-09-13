@@ -10,6 +10,8 @@ const HomePage = () => {
   const [todo, setTodo] = useState("");
   const [todoValid, setTodoValid] = useState(false);
 
+  //
+
   // CONTEXTS
   const todoCtx = useContext(TodoContext);
   const authCtx = useContext(AuthContext);
@@ -54,27 +56,29 @@ const HomePage = () => {
     <>
       <HomeHeader />
 
-      <form onSubmit={todoCreateHandler}>
-        <div className="flex items-center justify-center">
-          <input
-            onChange={todoChangeHandler}
-            type="text"
-            className="rounded py-2 px-4 w-1/3 mb-10"
-            placeholder="Add a task"
-            value={todo}
-          />
-        </div>
-      </form>
-
-      {todoCtx.todos.length != 0 ? (
-        <div className="max-w-4xl	m-auto border-slate-600 border-2 flex flex-col gap-4">
-          {todoCtx.todos.map((todo) => {
-            return <Todo key={todo._id} {...todo}></Todo>;
-          })}
-        </div>
-      ) : (
-        "Loading Todos"
-      )}
+      <div className="ml-12 mr-12">
+        {/* I am rendering todos here... */}
+        {todoCtx.todos.length != 0 ? (
+          <div className="max-w-full flex flex-col gap-0">
+            {todoCtx.displayTodos.map((todo) => {
+              return <Todo key={todo._id} {...todo}></Todo>;
+            })}
+          </div>
+        ) : (
+          "Loading Todos"
+        )}
+        <form onSubmit={todoCreateHandler}>
+          <div className="max-w-full flex flex-col gap-0 mt-6">
+            <input
+              onChange={todoChangeHandler}
+              type="text"
+              className="rounded py-2 px-4 border-b-2"
+              placeholder="Add a task"
+              value={todo}
+            />
+          </div>
+        </form>
+      </div>
     </>
   );
 };

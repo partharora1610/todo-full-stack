@@ -8,21 +8,21 @@ const Todo = ({ done, title }) => {
 
   const handleCheckboxChange = () => {
     setCompleted(!completed);
-    // also send an api call here to update the same in the backend
     todoCtx.onUpdate();
   };
 
   return (
     <div
-      className={`todo-item ${
-        completed ? "completed" : ""
-      } bg-slate-300 rounded px-6 py-2`}
+      className={` px-2 py-2 border-b-2 ${
+        completed ? "bg-gray-100 text-slate-500 cursor-pointer " : "bg-white"
+      }`}
     >
-      <div className="flex gap-4 align-center w-1/2 m-auto">
+      <div className="flex gap-4 w-1/2  justify-start py-1">
         <input
           type="checkbox"
           checked={completed}
           onChange={handleCheckboxChange}
+          className="w-6 h-6 rounded-full"
         />
         <div className={`todo-details flex ${completed ? "line-through" : ""}`}>
           <h2>{title}</h2>
