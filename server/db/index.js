@@ -11,6 +11,7 @@ const todoSchema = new mongoose.Schema({
   title: String,
   description: String,
   done: Boolean,
+  date: String,
   userId: String,
 });
 

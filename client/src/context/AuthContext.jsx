@@ -12,24 +12,23 @@ export const AuthContext = React.createContext({
 });
 
 const AuthContextProvider = ({ children }) => {
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(true);
   const [currentUser, setCurrentUser] = useState({});
   const [token, setToken] = useState("");
 
   const loginHandler = (userObj) => {
     fetch(`http://localhost:3000/auth/login`, {
       method: "POST",
-      headers: {},
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify({ ...userObj }),
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         setToken(data.token);
         setCurrentUser();
         setLoggedIn(true);
-        // navigate("/home");
-        // navigate to the home page
       });
   };
 
@@ -37,12 +36,10 @@ const AuthContextProvider = ({ children }) => {
     setLoggedIn(false);
     setToken("");
     setCurrentUser({});
-    // remove data from the local storage
-    // navigate to the auth page
+    localStorage.removeItem("key");
   };
 
   const signupHandler = (userObj) => {
-    console.log(userObj);
     fetch(`http://localhost:3000/auth/signup`, {
       method: "POST",
       headers: {
@@ -52,13 +49,10 @@ const AuthContextProvider = ({ children }) => {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         setToken(data.token);
-        setCurrentUser();
         setLoggedIn(true);
-        // navigate("/home");
-        // update the local storage
-        // navigate to the home page
+        console.log(data.token);
+        localStorage.setItem("key", token);
       });
   };
 

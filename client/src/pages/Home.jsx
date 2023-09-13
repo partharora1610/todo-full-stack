@@ -1,12 +1,20 @@
-import { useContext, useState } from "react";
+/* eslint-disable no-unused-vars */
+import { useContext, useEffect, useState } from "react";
 import { TodoContext } from "../context/TodoContext";
 import Todo from "../components/Todo";
+import { AuthContext } from "../context/AuthContext";
+import HomeHeader from "../components/HomeHeader";
 
 const HomePage = () => {
+  // FORM STATES
   const [todo, setTodo] = useState("");
   const [todoValid, setTodoValid] = useState(false);
-  const todoCtx = useContext(TodoContext);
 
+  // CONTEXTS
+  const todoCtx = useContext(TodoContext);
+  const authCtx = useContext(AuthContext);
+
+  // TODO CHANGE HANDLER
   const todoChangeHandler = (e) => {
     setTodo(e.target.value);
 
@@ -15,9 +23,9 @@ const HomePage = () => {
     }
   };
 
+  // TODO CREATE HANDLER
   const todoCreateHandler = (e) => {
     e.preventDefault();
-
     const newTodo = { title: todo, date: new Date() };
 
     if (todoValid) {
@@ -27,8 +35,25 @@ const HomePage = () => {
     setTodo("");
   };
 
+  useEffect(() => {
+    // GET ALL TODOS
+    fetch("http://localhost:3000/todos", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + authCtx.token,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+      });
+  }, []);
+
   return (
     <>
+      <HomeHeader />
+
       <form onSubmit={todoCreateHandler}>
         <div className="flex items-center justify-center">
           <input
@@ -41,11 +66,15 @@ const HomePage = () => {
         </div>
       </form>
 
-      <div className="max-w-4xl	m-auto border-slate-600 border-2 flex flex-col gap-4">
-        {todoCtx.todos.map((todo) => {
-          return <Todo key={todo._id} {...todo}></Todo>;
-        })}
-      </div>
+      {todoCtx.todos.length != 0 ? (
+        <div className="max-w-4xl	m-auto border-slate-600 border-2 flex flex-col gap-4">
+          {todoCtx.todos.map((todo) => {
+            return <Todo key={todo._id} {...todo}></Todo>;
+          })}
+        </div>
+      ) : (
+        "Loading Todos"
+      )}
     </>
   );
 };

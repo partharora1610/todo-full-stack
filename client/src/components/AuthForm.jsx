@@ -1,14 +1,13 @@
 /* eslint-disable react/prop-types */
 import { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 
 const AuthForm = ({ isLogin }) => {
   const [enteredEmail, setEnteredEmail] = useState("");
   const [enteredPassword, setEnteredPassword] = useState("");
   const authCtx = useContext(AuthContext);
-
-  // const apiEndPoint = isLogin ? "login" : "signup";
+  const navigate = useNavigate();
 
   const emailChangeHandler = (e) => {
     setEnteredEmail(e.target.value);
@@ -25,8 +24,10 @@ const AuthForm = ({ isLogin }) => {
 
     if (isLogin) {
       authCtx.onLogin(userObj);
+      navigate("/home");
     } else {
       authCtx.onSignup(userObj);
+      navigate("/home");
     }
   };
 

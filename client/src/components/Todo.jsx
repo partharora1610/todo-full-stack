@@ -10,7 +10,6 @@ const Todo = ({ done, title }) => {
     setCompleted(!completed);
     // also send an api call here to update the same in the backend
     todoCtx.onUpdate();
-    // Here the backend will toggle the done status in the Todo
   };
 
   return (

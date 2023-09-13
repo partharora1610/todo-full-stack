@@ -3,6 +3,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import RootLayout from "./pages/Root";
 import AuthPage from "./pages/Auth";
 import HomePage from "./pages/Home";
+// import { checkAuthLoader } from "./util/checkAuth";
 
 const router = createBrowserRouter([
   {
@@ -16,6 +17,8 @@ const router = createBrowserRouter([
       {
         path: "/home",
         element: <HomePage />,
+        // loader: checkAuthLoader,
+        // loader is loaded before the page is rendered
       },
     ],
   },

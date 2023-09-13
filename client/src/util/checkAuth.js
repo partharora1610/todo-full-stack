@@ -1,3 +1,17 @@
-const verifyUser = () => {};
+import { redirect } from "react-router-dom";
 
-export default verifyUser;
+export const getAuthToken = () => {
+  localStorage.getItem("key");
+};
+
+export const tokenLoader = () => {
+  return getAuthToken();
+};
+
+export const checkAuthLoader = () => {
+  const token = getAuthToken();
+
+  if (!token) {
+    return redirect("/auth");
+  }
+};
