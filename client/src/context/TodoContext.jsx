@@ -18,19 +18,19 @@ const TodoContextProvider = ({ children }) => {
     { _id: 3, title: "TODO 3", done: false, date: new Date() },
     {
       _id: 4,
-      title: "Saaaxxxx hogya bhaii",
+      title: "Todo 4",
       done: true,
       date: new Date("Wed Sep 14 2023 23:17:08 GMT+0530 (India Standard Time)"),
     },
     {
       _id: 5,
-      title: "Saaaxxxx hogya bhaii",
+      title: "Todo 4",
       done: false,
       date: new Date("Wed Sep 14 2023 23:17:08 GMT+0530 (India Standard Time)"),
     },
     {
       _id: 6,
-      title: "Saaaxxxx hogya bhaii",
+      title: "Todo 5",
       done: false,
       date: new Date("Wed Sep 15 2023 23:17:08 GMT+0530 (India Standard Time)"),
     },
