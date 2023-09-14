@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from "react";
-// import { redirect } from "react-router-dom";
+import { setAuthToken } from "../util/checkAuth";
 
 export const AuthContext = React.createContext({
   loggedIn: false,
@@ -12,9 +12,14 @@ export const AuthContext = React.createContext({
 });
 
 const AuthContextProvider = ({ children }) => {
-  const [loggedIn, setLoggedIn] = useState(true);
+  const [loggedIn, setLoggedIn] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
   const [token, setToken] = useState("");
+
+  // useEffect(() => {
+  //   // get the whole user by the id
+  //   // Write a function to get a user object from the database...
+  // }, []);
 
   const loginHandler = (userObj) => {
     fetch(`http://localhost:3000/auth/login`, {
@@ -27,8 +32,10 @@ const AuthContextProvider = ({ children }) => {
       .then((response) => response.json())
       .then((data) => {
         setToken(data.token);
-        setCurrentUser();
+        setCurrentUser(data.currentUser);
         setLoggedIn(true);
+        // updating the local storage
+        setAuthToken(data.token);
       });
   };
 
@@ -39,7 +46,7 @@ const AuthContextProvider = ({ children }) => {
     localStorage.removeItem("key");
   };
 
-  const signupHandler = (userObj) => {
+  const signupHandler = (userObj, callback) => {
     fetch(`http://localhost:3000/auth/signup`, {
       method: "POST",
       headers: {
@@ -47,12 +54,22 @@ const AuthContextProvider = ({ children }) => {
       },
       body: JSON.stringify({ ...userObj }),
     })
-      .then((response) => response.json())
+      .then((response) => {
+        return response.json();
+      })
       .then((data) => {
         setToken(data.token);
+        setCurrentUser(data.currentUser);
         setLoggedIn(true);
-        console.log(data.token);
-        localStorage.setItem("key", token);
+
+        // updating the local storage
+        setAuthToken(data.token);
+
+        // calling the function here
+        // The issue here is that I am calling the callback function even without checking whether the response is fine or not
+        if (data) {
+          callback("/home");
+        }
       });
   };
 

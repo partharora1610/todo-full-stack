@@ -18,7 +18,6 @@ const router = createBrowserRouter([
         path: "/home",
         element: <HomePage />,
         // loader: checkAuthLoader,
-        // loader is loaded before the page is rendered
       },
     ],
   },

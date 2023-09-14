@@ -1,14 +1,13 @@
 /* eslint-disable react/prop-types */
-import { useContext, useState } from "react";
-import { TodoContext } from "../context/TodoContext";
+import { useState } from "react";
+// import { TodoContext } from "../context/TodoContext";
+// import { AuthContext } from "../contsext/AuthContext";
 
 const Todo = ({ done, title }) => {
-  const todoCtx = useContext(TodoContext);
   const [completed, setCompleted] = useState(done);
 
   const handleCheckboxChange = () => {
     setCompleted(!completed);
-    todoCtx.onUpdate();
   };
 
   return (

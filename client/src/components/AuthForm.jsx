@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -17,6 +18,11 @@ const AuthForm = ({ isLogin }) => {
     setEnteredPassword(e.target.value);
   };
 
+  const changePathHandler = (str) => {
+    console.log("Hitting this...");
+    navigate(str);
+  };
+
   const formSubmitHandler = (e) => {
     e.preventDefault();
 
@@ -24,10 +30,8 @@ const AuthForm = ({ isLogin }) => {
 
     if (isLogin) {
       authCtx.onLogin(userObj);
-      navigate("/home");
     } else {
-      authCtx.onSignup(userObj);
-      navigate("/home");
+      authCtx.onSignup(userObj, changePathHandler);
     }
   };
 

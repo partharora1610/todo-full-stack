@@ -15,3 +15,7 @@ export const checkAuthLoader = () => {
     return redirect("/auth");
   }
 };
+
+export const setAuthToken = (token) => {
+  localStorage.setItem("key", token);
+};

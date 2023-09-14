@@ -1,15 +1,12 @@
 const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
-  username: String,
+  username: { type: String },
   password: String,
-  // todos: [],
-  // here we will use the populate method to get the strings
 });
 
 const todoSchema = new mongoose.Schema({
   title: String,
-  description: String,
   done: Boolean,
   date: String,
   userId: String,

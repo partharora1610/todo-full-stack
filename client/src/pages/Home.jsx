@@ -1,16 +1,15 @@
 /* eslint-disable no-unused-vars */
 import { useContext, useEffect, useState } from "react";
 import { TodoContext } from "../context/TodoContext";
-import Todo from "../components/Todo";
 import { AuthContext } from "../context/AuthContext";
+
+import Todo from "../components/Todo";
 import HomeHeader from "../components/HomeHeader";
 
 const HomePage = () => {
   // FORM STATES
   const [todo, setTodo] = useState("");
   const [todoValid, setTodoValid] = useState(false);
-
-  //
 
   // CONTEXTS
   const todoCtx = useContext(TodoContext);
@@ -20,7 +19,7 @@ const HomePage = () => {
   const todoChangeHandler = (e) => {
     setTodo(e.target.value);
 
-    if (e.target.value.length >= 4) {
+    if (e.target.value.length >= 3) {
       setTodoValid(true);
     }
   };
@@ -28,9 +27,30 @@ const HomePage = () => {
   // TODO CREATE HANDLER
   const todoCreateHandler = (e) => {
     e.preventDefault();
-    const newTodo = { title: todo, date: new Date() };
+    const newTodo = {
+      title: todo,
+      date: new Date(),
+      done: false,
+      userId: authCtx.currentUser._id,
+    };
 
     if (todoValid) {
+      // SEDNING THE API REQUEST HERE...
+      // fetch("http://localhost:3000/todos", {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //     Authorization: "Bearer " + authCtx.token,
+      //   },
+      //   body: JSON.stringify(...newTodo),
+      // })
+      //   .then((response) => response.json())
+      //   .then((data) => {
+      //     console.log(data);
+      //   });
+
+      // Adding the same in the state here...
+      console.log(newTodo);
       todoCtx.onCreate(newTodo);
     }
 
@@ -38,7 +58,6 @@ const HomePage = () => {
   };
 
   useEffect(() => {
-    // GET ALL TODOS
     fetch("http://localhost:3000/todos", {
       method: "GET",
       headers: {
@@ -57,15 +76,14 @@ const HomePage = () => {
       <HomeHeader />
 
       <div className="ml-12 mr-12">
-        {/* I am rendering todos here... */}
         {todoCtx.todos.length != 0 ? (
           <div className="max-w-full flex flex-col gap-0">
-            {todoCtx.displayTodos.map((todo) => {
+            {todoCtx?.displayTodos.map((todo) => {
               return <Todo key={todo._id} {...todo}></Todo>;
             })}
           </div>
         ) : (
-          "Loading Todos"
+          ""
         )}
         <form onSubmit={todoCreateHandler}>
           <div className="max-w-full flex flex-col gap-0 mt-6">
@@ -84,3 +102,15 @@ const HomePage = () => {
 };
 
 export default HomePage;
+
+/**
+ * When signup
+ * Update all the states
+ * Send an api request
+ * save the token
+ *
+ * when Logout
+ * update all thee states
+ * unsave the token from the local storage
+ *
+ */

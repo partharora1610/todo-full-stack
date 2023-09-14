@@ -1,3 +1,4 @@
+// These Functions are returning date full string
 export function getNext7Dates(today) {
   const next7Dates = [];
 
@@ -5,7 +6,6 @@ export function getNext7Dates(today) {
     const nextDate = new Date(today);
     nextDate.setDate(today.getDate() + i);
     next7Dates.push(nextDate);
-    // I cant return half dates here need to return the full string here
   }
 
   return next7Dates;

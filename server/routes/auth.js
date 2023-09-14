@@ -7,6 +7,7 @@ const router = express.Router();
 router.post("/login", async (req, res) => {
   const { username, password } = req.body;
   const user = await User.findOne({ username, password });
+  console.log(user);
   if (user) {
     const token = jwt.sign({ id: user._id }, "SECRET", { expiresIn: "1h" });
     res.json({ message: "Logged in successfully", token });
@@ -24,7 +25,11 @@ router.post("/signup", async (req, res) => {
     const newUser = new User({ username, password });
     await newUser.save();
     const token = jwt.sign({ id: newUser._id }, "SECRET", { expiresIn: "1h" });
-    res.json({ message: "User created successfully", token });
+    res.json({
+      message: "User created successfully",
+      token,
+      currentUser: newUser,
+    });
   }
 });
 

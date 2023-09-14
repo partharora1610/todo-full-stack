@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 
-const authenticateJwt = (req, res) => {
+const authenticateJwt = (req, res, next) => {
   const authHeader = req.headers.authorization;
   if (authHeader) {
     const token = authHeader.split(" ")[1];
@@ -8,6 +8,7 @@ const authenticateJwt = (req, res) => {
       if (err) {
         return res.sendStatus(403);
       }
+      // we are adding the jwt to the req that goes
       req.userId = user.id;
       next();
     });

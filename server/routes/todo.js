@@ -15,7 +15,7 @@ router.get("/", authenticateJwt, (req, res) => {
     });
 });
 
-router.post("/", (req, res) => {
+router.post("/", authenticateJwt, (req, res) => {
   const { title, description } = req.body;
   const done = false;
 
@@ -30,13 +30,13 @@ router.post("/", (req, res) => {
     });
 });
 
-// router.delete("/todos", (res, res) => {});
+router.delete("/todos", (req, res) => {});
 
-router.patch("/:todoId", (req, res) => {
-  const { todoId } = req.params;
+router.patch("/todos", authenticateJwt, (req, res) => {
+  // const { todoId } = req.params;
   const userId = req.userId;
+  const todoId = req.todoId;
 
-  // just updating the database from here nothing else..
   Todo.findOneAndUpdate({ _id: todoId, userId }, { done: true }, { new: true })
     .then((updatedTodo) => {
       if (!updatedTodo) {

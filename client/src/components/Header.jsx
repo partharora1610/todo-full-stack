@@ -3,8 +3,11 @@ import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 const Header = () => {
-  const { currentUser, loggedIn, onLogout } = useContext(AuthContext);
+  const { loggedUser, loggedIn, onLogout } = useContext(AuthContext);
   const navigate = useNavigate();
+
+  // CURRENT USERS
+  console.log(loggedUser);
 
   return (
     <>
@@ -13,14 +16,14 @@ const Header = () => {
           <img src="" alt="TODOC" className="bg-slate-600" />
         </div>
 
-        <div className="flex">
-          {loggedIn ? (
+        <div className="flex items-center">
+          {/* {loggedIn ? (
             <div>
-              <p>{currentUser?.username}</p>
+              <p>{loggedUser?.username}</p>
             </div>
           ) : (
             ""
-          )}
+          )} */}
 
           {!loggedIn ? (
             <button className="bg-indigo-600 text-white py-3 px-8 rounded hover:bg-indigo-500">
@@ -28,11 +31,16 @@ const Header = () => {
             </button>
           ) : (
             <div className="flex items-center gap-8">
-              <img
+              <div>
+                <p className="text-slate-500 font-bold">
+                  {loggedUser?.username}
+                </p>
+              </div>
+              {/* <img
                 alt="avatar"
                 src=""
                 className="bg-slate-300 w-12 h-12 rounded-full"
-              />
+              /> */}
               <button
                 className="bg-indigo-600 text-white py-3 px-8 rounded hover:bg-indigo-500"
                 onClick={() => {
