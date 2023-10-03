@@ -35,6 +35,7 @@ const TodoContextProvider = ({ children }) => {
     //   date: new Date("Wed Sep 15 2023 23:17:08 GMT+0530 (India Standard Time)"),
     // },
   ]);
+
   const [todoString, setTodoString] = useState(new Date().toDateString());
 
   const displayTodos = todos.filter(

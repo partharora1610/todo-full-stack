@@ -19,7 +19,6 @@ const AuthForm = ({ isLogin }) => {
   };
 
   const changePathHandler = (str) => {
-    console.log("Hitting this...");
     navigate(str);
   };
 
@@ -29,7 +28,7 @@ const AuthForm = ({ isLogin }) => {
     const userObj = { username: enteredEmail, password: enteredPassword };
 
     if (isLogin) {
-      authCtx.onLogin(userObj);
+      authCtx.onLogin(userObj, changePathHandler);
     } else {
       authCtx.onSignup(userObj, changePathHandler);
     }
@@ -62,7 +61,7 @@ const AuthForm = ({ isLogin }) => {
                 <input
                   id="email"
                   name="email"
-                  type="email"
+                  // type="email"
                   autoComplete="email"
                   value={enteredEmail}
                   onChange={emailChangeHandler}

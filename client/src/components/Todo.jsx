@@ -1,7 +1,5 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
-// import { TodoContext } from "../context/TodoContext";
-// import { AuthContext } from "../contsext/AuthContext";
 
 const Todo = ({ done, title }) => {
   const [completed, setCompleted] = useState(done);

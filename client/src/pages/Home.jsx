@@ -14,6 +14,7 @@ const HomePage = () => {
   // CONTEXTS
   const todoCtx = useContext(TodoContext);
   const authCtx = useContext(AuthContext);
+  console.log(authCtx);
 
   // TODO CHANGE HANDLER
   const todoChangeHandler = (e) => {
@@ -31,23 +32,25 @@ const HomePage = () => {
       title: todo,
       date: new Date(),
       done: false,
-      userId: authCtx.currentUser._id,
+      userId: authCtx.loggedUser._id,
     };
 
     if (todoValid) {
+      console.log("Todo valid ");
       // SEDNING THE API REQUEST HERE...
-      // fetch("http://localhost:3000/todos", {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //     Authorization: "Bearer " + authCtx.token,
-      //   },
-      //   body: JSON.stringify(...newTodo),
-      // })
-      //   .then((response) => response.json())
-      //   .then((data) => {
-      //     console.log(data);
-      //   });
+      fetch("http://localhost:3000/todos", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + authCtx.token,
+        },
+
+        body: JSON.stringify(...newTodo),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+        });
 
       // Adding the same in the state here...
       console.log(newTodo);
@@ -58,6 +61,8 @@ const HomePage = () => {
   };
 
   useEffect(() => {
+    console.log(authCtx.token);
+
     fetch("http://localhost:3000/todos", {
       method: "GET",
       headers: {
@@ -67,6 +72,7 @@ const HomePage = () => {
     })
       .then((response) => response.json())
       .then((data) => {
+        console.log("TODOS");
         console.log(data);
       });
   }, []);

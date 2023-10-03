@@ -3,6 +3,7 @@ import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 const Header = () => {
+  // AUTH CONTEXT
   const { loggedUser, loggedIn, onLogout } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -17,14 +18,6 @@ const Header = () => {
         </div>
 
         <div className="flex items-center">
-          {/* {loggedIn ? (
-            <div>
-              <p>{loggedUser?.username}</p>
-            </div>
-          ) : (
-            ""
-          )} */}
-
           {!loggedIn ? (
             <button className="bg-indigo-600 text-white py-3 px-8 rounded hover:bg-indigo-500">
               Start Now

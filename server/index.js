@@ -1,6 +1,5 @@
 const express = require("express");
-const bodyParser = require("body-parser");
-const mongoose = require("mongoose");
+
 const authRouter = require("./routes/auth");
 const todoRouter = require("./routes/todo");
 const cors = require("cors");
@@ -13,13 +12,23 @@ app.use(express.json());
 app.use("/auth", authRouter);
 app.use("/todos", todoRouter);
 
-app.listen(3000);
+// Handling operational errors
+app.all("*", (req, res, next) => {
+  // creating an error so that the middleware can handle the error
+  const err = new Error(`Can't find the ${req.originalUrl} on the server`);
+  err.status = "fail";
+  err.statusCode = 404;
 
-mongoose
-  .connect(
-    "mongodb+srv://partharora2233:partharora@cluster0.qojfnju.mongodb.net/",
-    { dbName: "todoc" }
-  )
-  .then(console.log("Mongodb connected...."));
+  next(err);
+});
 
-// Connecting the mongoose here to make the connection here...
+// Global Error Middleware
+// 500 => Internal Server Error
+app.use((err, req, res, next) => {
+  err.statusCode = err.statusCode || 500;
+  err.status = err.status || "error";
+
+  res.status(err.statusCode).json({ status: err.status, message: err.message });
+});
+
+module.exports = app;

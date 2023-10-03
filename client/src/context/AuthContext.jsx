@@ -1,6 +1,7 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import React, { useState } from "react";
-import { setAuthToken } from "../util/checkAuth";
+import React, { useState, useEffect } from "react";
+import { getAuthToken, setAuthToken } from "../util/checkAuth";
 
 export const AuthContext = React.createContext({
   loggedIn: false,
@@ -16,12 +17,17 @@ const AuthContextProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState({});
   const [token, setToken] = useState("");
 
-  // useEffect(() => {
-  //   // get the whole user by the id
-  //   // Write a function to get a user object from the database...
-  // }, []);
+  useEffect(() => {
+    async () => {
+      const token = getAuthToken();
 
-  const loginHandler = (userObj) => {
+      // Need to get the token here
+      // Get the user object
+      // Update the states in the app
+    };
+  }, []);
+
+  const loginHandler = (userObj, callback) => {
     fetch(`http://localhost:3000/auth/login`, {
       method: "POST",
       headers: {
@@ -29,13 +35,19 @@ const AuthContextProvider = ({ children }) => {
       },
       body: JSON.stringify({ ...userObj }),
     })
-      .then((response) => response.json())
+      .then((response) => {
+        return response.json();
+      })
       .then((data) => {
         setToken(data.token);
         setCurrentUser(data.currentUser);
         setLoggedIn(true);
-        // updating the local storage
         setAuthToken(data.token);
+
+        // changing the state of the user
+        if (data) {
+          callback("/home");
+        }
       });
   };
 
@@ -62,11 +74,8 @@ const AuthContextProvider = ({ children }) => {
         setCurrentUser(data.currentUser);
         setLoggedIn(true);
 
-        // updating the local storage
         setAuthToken(data.token);
 
-        // calling the function here
-        // The issue here is that I am calling the callback function even without checking whether the response is fine or not
         if (data) {
           callback("/home");
         }
@@ -90,3 +99,10 @@ const AuthContextProvider = ({ children }) => {
 };
 
 export default AuthContextProvider;
+
+/**
+ * Two things that I need to implement
+ * 1. Reload and preserve the login state
+ * 2. Create date wise task
+ * 3. Ensure all routes are working perfectly fine.
+ */

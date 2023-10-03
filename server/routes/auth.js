@@ -1,16 +1,38 @@
 const express = require("express");
-const { User } = require("../db");
+const User = require("../db/User");
 const jwt = require("jsonwebtoken");
 
 const router = express.Router();
 
 router.post("/login", async (req, res) => {
   const { username, password } = req.body;
+
   const user = await User.findOne({ username, password });
   console.log(user);
   if (user) {
     const token = jwt.sign({ id: user._id }, "SECRET", { expiresIn: "1h" });
-    res.json({ message: "Logged in successfully", token });
+    res.json({
+      message: "Logged in successfully",
+      token,
+      currentUser: user,
+    });
+  } else {
+    res.status(403).send({ message: "User does not exist in the database" });
+  }
+});
+
+router.post("/refresh", async (req, res) => {
+  const { token } = req.body;
+
+  const user = await User.findOne({ token });
+
+  if (user) {
+    const token = jwt.sign({ id: user._id }, "SECRET", { expiresIn: "1h" });
+    res.json({
+      message: "Logged in successfully",
+      token,
+      currentUser: user,
+    });
   } else {
     res.status(403).send({ message: "User does not exist in the database" });
   }
