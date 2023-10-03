@@ -1,5 +1,5 @@
 const express = require("express");
-const authenticateJwt = require("../middleware/auth");
+const checkAuth = require("./../middleware/auth.js");
 const {
   createTodos,
   getAllTodos,
@@ -9,6 +9,7 @@ const {
 
 const router = express.Router();
 
+// we will add middleware in front of every
 router.get("/", getAllTodos);
 router.post("/", createTodos);
 router.delete("/:id", deleteTodos);
