@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import React, { useEffect, useState, useSyncExternalStore } from "react";
+import React, { useState } from "react";
 
 export const TodoContext = React.createContext({
   todos: [],
@@ -12,35 +12,18 @@ export const TodoContext = React.createContext({
 });
 
 const TodoContextProvider = ({ children }) => {
-  const [todos, setTodos] = useState([
-    // { _id: 1, title: "TODO 1", done: true, date: new Date() },
-    // { _id: 2, title: "TODO 2", done: false, date: new Date() },
-    // { _id: 3, title: "TODO 3", done: false, date: new Date() },
-    // {
-    //   _id: 4,
-    //   title: "Todo 4",
-    //   done: true,
-    //   date: new Date("Wed Sep 14 2023 23:17:08 GMT+0530 (India Standard Time)"),
-    // },
-    // {
-    //   _id: 5,
-    //   title: "Todo 4",
-    //   done: false,
-    //   date: new Date("Wed Sep 14 2023 23:17:08 GMT+0530 (India Standard Time)"),
-    // },
-    // {
-    //   _id: 6,
-    //   title: "Todo 5",
-    //   done: false,
-    //   date: new Date("Wed Sep 15 2023 23:17:08 GMT+0530 (India Standard Time)"),
-    // },
-  ]);
+  const [todos, setTodos] = useState([]);
 
   const [todoString, setTodoString] = useState(new Date().toDateString());
 
-  const displayTodos = todos.filter(
-    (todo) => todo.date.toDateString() === todoString
-  );
+  // Need to filter the todos to display the todos based on the date change
+  // this will be done by attaching a change event using the context when date button is clicked
+  // const displayTodos = todos.filter(
+  //   (todo) => todo.date.toDateString() === todoString
+  // );
+  // we can also load all the todos here using the useEffect
+
+  const displayTodos = todos;
 
   const createTodoHandler = (newTodo) => {
     setTodos((prev) => {
@@ -48,7 +31,9 @@ const TodoContextProvider = ({ children }) => {
     });
   };
 
-  const updateTodoHandler = () => {};
+  const updateTodoHandler = (data) => {
+    setTodos(data);
+  };
 
   const updateTodoStringHandler = (string) => {
     setTodoString(string);

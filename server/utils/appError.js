@@ -1,7 +1,7 @@
 // These will be operational error
+// Using this class to just create Errors which are better structured
 class AppError extends Error {
   constructor(message, statusCode) {
-    // calling the parent class Error
     super(message);
 
     this.statusCode = statusCode;

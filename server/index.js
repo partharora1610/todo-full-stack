@@ -1,7 +1,8 @@
 const express = require("express");
-
+const AppError = require("./utils/appError");
 const authRouter = require("./routes/auth");
 const todoRouter = require("./routes/todo");
+const globalErrorHandler = require("./controllers/errors.js");
 const cors = require("cors");
 
 const app = express();
@@ -14,21 +15,10 @@ app.use("/todos", todoRouter);
 
 // Handling operational errors
 app.all("*", (req, res, next) => {
-  // creating an error so that the middleware can handle the error
-  const err = new Error(`Can't find the ${req.originalUrl} on the server`);
-  err.status = "fail";
-  err.statusCode = 404;
-
-  next(err);
+  next(new AppError(`Can't find the ${req.originalUrl} on the server`, 404));
 });
 
-// Global Error Middleware
-// 500 => Internal Server Error
-app.use((err, req, res, next) => {
-  err.statusCode = err.statusCode || 500;
-  err.status = err.status || "error";
-
-  res.status(err.statusCode).json({ status: err.status, message: err.message });
-});
+// This is the global error middleware
+app.use(globalErrorHandler);
 
 module.exports = app;

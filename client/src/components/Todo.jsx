@@ -5,6 +5,7 @@ const Todo = ({ done, title }) => {
   const [completed, setCompleted] = useState(done);
 
   const handleCheckboxChange = () => {
+    // now we have to make an api call here to save the changes in the datasbase
     setCompleted(!completed);
   };
 

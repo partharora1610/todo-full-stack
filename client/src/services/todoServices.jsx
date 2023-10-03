@@ -1,44 +1,34 @@
-// // How to get access of the auth context here
-// import { tokenLoader } from "../util/checkAuth";
+export const getAllTodos = async (contextHandler) => {
+  const response = await fetch("http://localhost:3000/todos", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + "token",
+    },
+  });
 
-// export const getAllTodos = async () => {
-//   const token = tokenLoader();
-//   const response = await fetch("http://localhost:3000/todos", {
-//     method: "GET",
-//     headers: {
-//       "Content-Type": "application/json",
-//       Authorization: "Bearer " + token,
-//     },
-//   });
+  const data = await response.json();
+  console.log(data);
 
-//   const data = await response.json();
-//   console.log(data);
-// };
+  contextHandler(data.data.todos);
+};
 
-// export const deleteTodo = async () => {
-//   const token = tokenLoader();
-//   const response = await fetch("http://localhost:3000/todos", {
-//     method: "DELETE",
-//     headers: {
-//       "Content-Type": "application/json",
-//       Authorization: "Bearer " + token,
-//     },
-//   });
+export const deleteTodo = (contextHandler) => {};
 
-//   const data = await response.json();
-//   console.log(data);
-// };
+export const updateTodo = () => {};
 
-// export const updateTodo = async () => {
-//   const token = tokenLoader();
-//   const response = await fetch("http://localhost:3000/todos", {
-//     method: "PATCH",
-//     headers: {
-//       "Content-Type": "application/json",
-//       Authorization: "Bearer " + token,
-//     },
-//   });
+export const createTodo = async (todo, contextHandler) => {
+  console.log(todo);
+  const response = await fetch("http://localhost:3000/todos", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + "authCtx.token",
+    },
+    body: JSON.stringify(todo),
+  });
+  const { data } = await response.json();
+  const newTodo = data.todo;
 
-//   const data = await response.json();
-//   console.log(data);
-// };
+  contextHandler(newTodo);
+};
