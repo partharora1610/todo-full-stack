@@ -2,11 +2,12 @@ const Todo = require("../db/Todo");
 const catchAsync = require("./../utils/catchAsync.js");
 
 exports.getAllTodos = catchAsync(async (req, res, next) => {
-  // just need to add id to the req object like req.id => userId instead of the body
-  const userId = req.body.id;
-  console.log(userId);
+  const userId = "651c7599922980f26583e3dd";
+  // const userId = req.id;
+  // this has come like req.id after we pass the function from the checkAuth middleware
 
   const todos = await Todo.find({ userId });
+
   res.status(200).json({
     status: "success",
     results: todos.length,
@@ -18,8 +19,7 @@ exports.getAllTodos = catchAsync(async (req, res, next) => {
 
 exports.createTodos = catchAsync(async (req, res, next) => {
   const userId = "partharora";
-  // just need to add id to req.id object and then extract it here
-
+  // this userID will aslo come from req.id after we pass from the checkAuth middleware
   const todo = { ...req.body, userId };
 
   const newTodo = await Todo.create(todo);
@@ -40,9 +40,11 @@ exports.deleteTodos = catchAsync(async (req, res, next) => {
 });
 
 exports.updateTodos = catchAsync(async (req, res, next) => {
-  const newTodo = await Todo.findByIdAndUpdate(
+  const newTodo = await Todo.findById({ _id: req.params.id });
+
+  await Todo.updateOne(
     { _id: req.params.id },
-    { done: true },
+    { done: !newTodo.done },
     { new: true }
   );
 

@@ -15,7 +15,18 @@ export const getAllTodos = async (contextHandler) => {
 
 export const deleteTodo = (contextHandler) => {};
 
-export const updateTodo = () => {};
+export const updateTodo = async (id, contextHandler) => {
+  const response = await fetch("http://localhost:3000/todos/" + id, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + "token",
+    },
+  });
+
+  const data = await response.json();
+  console.log(data);
+};
 
 export const createTodo = async (todo, contextHandler) => {
   console.log(todo);

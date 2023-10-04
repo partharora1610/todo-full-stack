@@ -1,11 +1,15 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
+import { updateTodo } from "../../src/services/todoServices";
 
-const Todo = ({ done, title }) => {
+const Todo = ({ done, title, _id: id }) => {
   const [completed, setCompleted] = useState(done);
 
   const handleCheckboxChange = () => {
     // now we have to make an api call here to save the changes in the datasbase
+    updateTodo(id);
+
+    // here we dont need update anything in the context...
     setCompleted(!completed);
   };
 

@@ -9,15 +9,16 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <RootLayout />,
+    errorElement: "",
     children: [
       {
-        path: "/auth",
+        index: true,
         element: <AuthPage />,
       },
       {
         path: "/home",
         element: <HomePage />,
-        // loader: checkAuthLoader,
+        // here we will put out auth loader
       },
     ],
   },
