@@ -7,6 +7,12 @@ import { AuthContext } from "../context/AuthContext";
 const AuthForm = ({ isLogin }) => {
   const [enteredEmail, setEnteredEmail] = useState("");
   const [enteredPassword, setEnteredPassword] = useState("");
+  const [enteredConfirmPassword, setEnteredConfirmPassword] = useState("");
+  const [enteredName, setEnteredName] = useState("");
+
+  // This is the basic validation improve this
+  let passwordValid = enteredPassword === enteredConfirmPassword;
+
   const authCtx = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -18,6 +24,14 @@ const AuthForm = ({ isLogin }) => {
     setEnteredPassword(e.target.value);
   };
 
+  const confirmPasswordChangeHandler = (e) => {
+    setEnteredConfirmPassword(e.target.value);
+  };
+
+  const nameChangeHandler = (e) => {
+    setEnteredName(e.target.value);
+  };
+
   const changePathHandler = (str) => {
     navigate(str);
   };
@@ -25,11 +39,16 @@ const AuthForm = ({ isLogin }) => {
   const formSubmitHandler = (e) => {
     e.preventDefault();
 
-    const userObj = { username: enteredEmail, password: enteredPassword };
-
     if (isLogin) {
+      const userObj = { email: enteredEmail, password: enteredPassword };
       authCtx.onLogin(userObj, changePathHandler);
     } else {
+      const userObj = {
+        name: enteredName,
+        email: enteredEmail,
+        password: enteredPassword,
+        confirmPassword: enteredConfirmPassword,
+      };
       authCtx.onSignup(userObj, changePathHandler);
     }
   };
@@ -50,6 +69,28 @@ const AuthForm = ({ isLogin }) => {
             method="POST"
             onSubmit={formSubmitHandler}
           >
+            {!isLogin && (
+              <div>
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium leading-6 text-gray-900"
+                >
+                  Name
+                </label>
+                <div className="mt-2">
+                  <input
+                    id="name"
+                    name="name"
+                    autoComplete="name"
+                    value={enteredName}
+                    onChange={nameChangeHandler}
+                    required
+                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 pl-4"
+                  />
+                </div>
+              </div>
+            )}
+
             <div>
               <label
                 htmlFor="email"
@@ -61,7 +102,7 @@ const AuthForm = ({ isLogin }) => {
                 <input
                   id="email"
                   name="email"
-                  // type="email"
+                  type="email"
                   autoComplete="email"
                   value={enteredEmail}
                   onChange={emailChangeHandler}
@@ -70,6 +111,7 @@ const AuthForm = ({ isLogin }) => {
                 />
               </div>
             </div>
+            {/* input */}
 
             <div>
               <div className="flex items-center justify-between">
@@ -93,6 +135,28 @@ const AuthForm = ({ isLogin }) => {
                 />
               </div>
             </div>
+            {!isLogin && (
+              <div>
+                <label
+                  htmlFor="password"
+                  className="block text-sm font-medium leading-6 text-gray-900"
+                >
+                  Confirm Password
+                </label>
+                <div className="mt-2">
+                  <input
+                    id="confirm-password"
+                    name="confirm-password"
+                    autoComplete="name"
+                    type="password"
+                    value={enteredConfirmPassword}
+                    onChange={confirmPasswordChangeHandler}
+                    required
+                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 pl-4"
+                  />
+                </div>
+              </div>
+            )}
 
             <div>
               <button
@@ -108,7 +172,7 @@ const AuthForm = ({ isLogin }) => {
             <p className="mt-10 text-center text-sm text-gray-500">
               Already a member?{" "}
               <Link
-                to={`/auth?mode=signup`}
+                to={`?mode=signup`}
                 className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
               >
                 Signup Now
@@ -118,7 +182,7 @@ const AuthForm = ({ isLogin }) => {
             <p className="mt-10 text-center text-sm text-gray-500">
               Not a Member?{" "}
               <Link
-                to={`/auth?mode=login`}
+                to={`?mode=login`}
                 className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
               >
                 Login Now

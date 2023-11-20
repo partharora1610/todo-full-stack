@@ -6,6 +6,7 @@ const signToken = (id) => {
 };
 
 exports.loginHandler = async (req, res) => {
+  console.log("Hitting the backend login route C1");
   const email = req.body.email;
   const password = req.body.password;
 
@@ -13,13 +14,15 @@ exports.loginHandler = async (req, res) => {
     // throw an app error
   }
 
-  const user = await User.findOne({ email }).select("+passsword");
+  const user = await User.findOne({ email });
+  // const user = await User.findOne({ email }).select("+passsword");
 
-  if (!user || !(password === user.password)) {
-    return; // later with the correct passowrd method
-  }
+  // if (!user || !(password === user.password)) {
+  //   return; // later with the correct passowrd method
+  // }
 
   const token = signToken(user._id);
+  console.log("Hitting the backend login route C2");
 
   res.status(200).json({
     status: "success",
@@ -32,11 +35,13 @@ exports.loginHandler = async (req, res) => {
 };
 
 exports.signupHandler = async (req, res) => {
+  const { email, name, password, confrimPassword } = req.body;
+
   const newUser = await User.create({
-    email: req.body.email,
-    name: req.body.name,
-    password: req.body.password,
-    confrimPassword: req.body.confrimPassword,
+    name,
+    email,
+    password,
+    confrimPassword,
   });
 
   const token = signToken(newUser._id);
@@ -52,7 +57,9 @@ exports.signupHandler = async (req, res) => {
 };
 
 // need to implmemnt this
-exports.refreshHandler = async (req, res) => {};
+exports.refreshHandler = async (req, res) => {
+  // We have the id here
+};
 
 // need to implment this
 exports.socialAuthHandler = async (req, res) => {};

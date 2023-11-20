@@ -2,7 +2,7 @@ const Todo = require("../db/Todo");
 const catchAsync = require("./../utils/catchAsync.js");
 
 exports.getAllTodos = catchAsync(async (req, res, next) => {
-  const userId = "651c7599922980f26583e3dd";
+  const userId = "partharora";
   // const userId = req.id;
   // this has come like req.id after we pass the function from the checkAuth middleware
 

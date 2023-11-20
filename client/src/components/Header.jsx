@@ -3,12 +3,8 @@ import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 const Header = () => {
-  // AUTH CONTEXT
   const { loggedUser, loggedIn, onLogout } = useContext(AuthContext);
   const navigate = useNavigate();
-
-  // CURRENT USERS
-  console.log(loggedUser);
 
   return (
     <>
@@ -25,9 +21,7 @@ const Header = () => {
           ) : (
             <div className="flex items-center gap-8">
               <div>
-                <p className="text-slate-500 font-bold">
-                  {loggedUser?.username}
-                </p>
+                <p className="text-slate-500 font-bold">{loggedUser?.name}</p>
               </div>
               {/* <img
                 alt="avatar"

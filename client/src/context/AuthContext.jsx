@@ -2,6 +2,7 @@
 /* eslint-disable react/prop-types */
 import React, { useState, useEffect } from "react";
 import { getAuthToken, setAuthToken } from "../util/checkAuth";
+import { login, signup } from "../services/authServices";
 
 export const AuthContext = React.createContext({
   loggedIn: false,
@@ -17,38 +18,15 @@ const AuthContextProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState({});
   const [token, setToken] = useState("");
 
-  useEffect(() => {
-    async () => {
-      const token = getAuthToken();
-
-      // Need to get the token here
-      // Get the user object
-      // Update the states in the app
-    };
-  }, []);
-
   const loginHandler = (userObj, callback) => {
-    fetch(`http://localhost:3000/auth/login`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ ...userObj }),
-    })
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        setToken(data.token);
-        setCurrentUser(data.currentUser);
-        setLoggedIn(true);
-        setAuthToken(data.token);
-
-        // changing the state of the user
-        if (data) {
-          callback("/home");
-        }
-      });
+    login(
+      userObj,
+      callback,
+      setAuthToken,
+      setCurrentUser,
+      setLoggedIn,
+      setToken
+    );
   };
 
   const logoutHandler = () => {
@@ -59,27 +37,14 @@ const AuthContextProvider = ({ children }) => {
   };
 
   const signupHandler = (userObj, callback) => {
-    fetch(`http://localhost:3000/auth/signup`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ ...userObj }),
-    })
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        setToken(data.token);
-        setCurrentUser(data.currentUser);
-        setLoggedIn(true);
-
-        setAuthToken(data.token);
-
-        if (data) {
-          callback("/home");
-        }
-      });
+    signup(
+      userObj,
+      callback,
+      setAuthToken,
+      setCurrentUser,
+      setLoggedIn,
+      setToken
+    );
   };
 
   return (

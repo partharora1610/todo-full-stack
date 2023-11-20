@@ -5,12 +5,13 @@ const {
   signupHandler,
   refreshHandler,
 } = require("../controllers/auth");
+const checkAuth = require("../middleware/auth");
 
 const router = express.Router();
 
 router.post("/login", loginHandler);
 
-router.post("/refresh", refreshHandler);
+router.post("/refresh", checkAuth, refreshHandler);
 
 router.post("/signup", signupHandler);
 

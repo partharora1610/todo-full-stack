@@ -32,7 +32,7 @@ const HomePage = () => {
       title: todo,
       date: new Date(),
       done: false,
-      userId: "authCtx.loggedUser._id",
+      userId: "partharora", // this will come from the authContext
     };
 
     if (todoValid) {
@@ -77,15 +77,3 @@ const HomePage = () => {
 };
 
 export default HomePage;
-
-/**
- * When signup
- * Update all the states
- * Send an api request
- * save the token
- *
- * when Logout
- * update all thee states
- * unsave the token from the local storage
- *
- */

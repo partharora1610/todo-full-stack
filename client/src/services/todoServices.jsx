@@ -10,6 +10,7 @@ export const getAllTodos = async (contextHandler) => {
   const data = await response.json();
   console.log(data);
 
+  // updating the data in the context
   contextHandler(data.data.todos);
 };
 
@@ -38,8 +39,11 @@ export const createTodo = async (todo, contextHandler) => {
     },
     body: JSON.stringify(todo),
   });
-  const { data } = await response.json();
-  const newTodo = data.todo;
 
-  contextHandler(newTodo);
+  const data = await response.json();
+
+  if (response.ok) {
+    // updating the data in the context
+    contextHandler(data.data.newTodo);
+  }
 };
